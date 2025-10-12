@@ -4,7 +4,7 @@ class Node {
 
     public:
         Node();
-        Node(int r, int c, int v);
+        Node(int v, int c, int r);
 
         int row;
         int col;

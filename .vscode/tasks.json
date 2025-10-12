@@ -1,0 +1,14 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "shell",
+			"label": "Compilar proyecto C++",
+			"command": "g++ -Iheaders source/Main.cpp source/SparseMatrix.cpp source/Node.cpp -o programa",
+			"group": "build",
+			"problemMatcher": [
+				"$gcc"
+			]
+		}
+	]
+}

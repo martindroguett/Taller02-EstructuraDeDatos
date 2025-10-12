@@ -1,7 +1,7 @@
-#include "headers/Node.h"
+#include "../headers/Node.h"
 
 Node::Node() { }
-Node::Node(int r, int c, int v) {
+Node::Node(int v, int c, int r) {
     this -> row = r;
     this -> col = c;
     this -> value = v;
