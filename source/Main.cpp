@@ -3,7 +3,11 @@
 
 using namespace std;
 
-SparseMatrix* mx = new SparseMatrix();
+SparseMatrix* mx1 = new SparseMatrix();
+SparseMatrix* mx2 = new SparseMatrix();
+SparseMatrix* current = mx1;
+
+bool isMx1 = true;
 
 void add() {
     cout << "Enter the value you want to add (Integer > 0)" << endl;
@@ -33,7 +37,7 @@ void add() {
         cin >> y;
     }
 
-    mx -> add(value, x, y);
+    current -> add(value, x, y);
 }
 
 void get() {
@@ -55,7 +59,7 @@ void get() {
         cin >> y;
     }
 
-    cout << "The value in the coordinates (" << x << "," << y << ") is: " << mx -> get(x,  y) << endl;
+    cout << "The value in the coordinates (" << x << "," << y << ") is: " << current -> get(x,  y) << endl;
 
 }
 
@@ -78,15 +82,26 @@ void remove() {
         cin >> y;
     }
 
-    mx -> remove(x, y);
+    current -> remove(x, y);
 }
 
 void density() {
-    
+    int density = current -> density();
+    cout << "The density of the matrix is: " << density << "%" << endl;
 }
 
 void multiply() {
+    SparseMatrix* newMx = nullptr;
+    if (isMx1) newMx = mx1 -> multiply(mx2);
+    else newMx = mx2 -> multiply(mx1);
 
+    if (newMx) newMx -> printStoredValues();
+}
+
+void change() {
+    isMx1 = !isMx1;
+    if (isMx1) current = mx1;
+    else current = mx2;
 }
 
 int main() {
@@ -97,24 +112,29 @@ int main() {
 
     int option = 0;
 
-    while (option != 7) {
+    while (option != 8) {
         cout << "=== Menu ===" << endl;
+        cout << "Currently working with: ";
+        if (isMx1) cout << "Matrix 1" << endl;
+        else cout << "Matrix 2" << endl;
         cout << "1. Add value" << endl;
         cout << "2. Get value" << endl;
         cout << "3. Remove value" << endl;
         cout << "4. Print stored values" << endl;
         cout << "5. See matrix density" << endl;
         cout << "6. Multiply with another matrix" << endl;
-        cout << "7. Exit" << endl;
+        cout << "7. Change matrix" << endl;
+        cout << "8. Exit" << endl;
         cout << "> "; cin >> option;
 
         if (option == 1) add();
         else if (option == 2) get();
         else if (option == 3) remove();
-        else if (option == 4) mx -> printStoredValues();
+        else if (option == 4) current -> printStoredValues();
         else if (option == 5) density();
         else if (option == 6) multiply();
-        else if (option == 7) cout << "Goodbye!" << endl;
+        else if (option == 7) change();
+        else if (option == 8) cout << "Goodbye!" << endl;
         else cout << "Please choose a valid option" << endl;
     }
 

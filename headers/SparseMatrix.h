@@ -4,6 +4,7 @@
 class SparseMatrix {
     private:
         Node* start;
+
     public:
         SparseMatrix();
 

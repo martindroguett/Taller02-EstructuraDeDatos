@@ -6,9 +6,7 @@ SparseMatrix::SparseMatrix() {
 }
 SparseMatrix::~SparseMatrix() { }
 
-
-
-void SparseMatrix::add(int value, int xPos, int yPos) {
+void SparseMatrix::add(int value, int xPos, int yPos) { //Ready
     Node* head = this -> start;
 
     if (xPos == 0 || yPos == 0) {
@@ -66,7 +64,7 @@ void SparseMatrix::add(int value, int xPos, int yPos) {
 
 }
 
-int SparseMatrix::get(int xPos, int yPos) {
+int SparseMatrix::get(int xPos, int yPos) { //Ready
     Node* head = this -> start;
 
     if (xPos == 0 || yPos == 0) {
@@ -147,10 +145,29 @@ void SparseMatrix::remove(int xPos, int yPos) { //Ready
     prevCol -> right = auxRow -> right;
     prevRow -> down = auxCol -> down;
 
+    Node* aux = head; //This aux will be used to remove the row or column headers if they become empty.
+    if (prevCol -> right == prevCol) {
+        while (aux -> down != prevCol) {
+            aux = aux -> down;
+        } 
+        aux -> down = prevCol -> down;
+        delete prevCol;
+    }
+
+    aux = head;
+
+    if (prevRow -> down == prevRow) {
+        while (aux -> right != prevRow) {
+            aux = aux -> right;
+        }
+        aux -> right = prevRow -> right;
+        delete prevRow;
+    }
+
     delete auxCol;
 }
 
-void SparseMatrix::printStoredValues() { //Ready!!!!
+void SparseMatrix::printStoredValues() { //Ready
     Node* head = this -> start;
     Node* aux = head -> down;
 
@@ -158,17 +175,96 @@ void SparseMatrix::printStoredValues() { //Ready!!!!
         Node* tempHead = aux -> right;
 
         while (tempHead != aux) {
-            if (tempHead -> value != 0) std::cout << "(" << tempHead -> col << "," << tempHead -> row << ") --> " << tempHead -> value << std::endl;
+            std::cout << "(" << tempHead -> col << "," << tempHead -> row << ") --> " << tempHead -> value << std::endl;
             tempHead = tempHead -> right;
         }
         aux = aux -> down;
     }
 }
 
-int SparseMatrix::density(){
+int SparseMatrix::density() { //Ready
+    int maxCol = 0;
+    int maxRow = 0;
+    int count = 0;
+    
+    Node* head = this -> start;
+    Node* aux = head -> down;
+
+    while (aux != head) {
+        Node* tempHead = aux -> right;
+
+        while (tempHead != aux) {
+            if (tempHead -> row > maxRow) maxRow = tempHead -> row;
+            if (tempHead -> col > maxCol) maxCol = tempHead -> col;
+            count++;
+            tempHead = tempHead -> right;
+        }
+        aux = aux -> down;
+    }
+
+    if (maxCol != 0 && maxRow != 0) {
+        std::cout << "Nodes != 0: " << count << std::endl;
+        std::cout << "Possible nodes: " << maxCol * maxRow << std::endl;
+
+        return (count * 100/(maxCol * maxRow));
+    }
+    std::cout << "The matrix is empty" << std::endl;
+
     return 0;
 }
 
-SparseMatrix* SparseMatrix::multiply(SparseMatrix* second){
-    return nullptr;
+SparseMatrix* SparseMatrix::multiply(SparseMatrix* mx2) { //Ready
+    Node* head1 = this -> start;
+    Node* aux1 = head1 -> right;
+
+    Node* head2 = mx2 -> start;
+    Node* aux2 = head2 -> down;
+
+    int countCol1 = 0;
+    while (aux1 != head1) { 
+        countCol1++;
+        aux1 = aux1 -> right;
+    }
+
+    int countRow2 = 0;
+    while (aux2 != head2) {
+        countRow2++;
+        aux2 = aux2 -> down;
+    }
+
+    if (countCol1 != countRow2) {
+        std::cout << "The matrices cannot be multiplied, the dimensions are not compatible." << std::endl;
+        return nullptr;
+    }
+
+    aux1 = head1 -> down;
+
+    SparseMatrix* newMx = new SparseMatrix();
+
+    while (aux1 != head1) {
+        Node* tempHead1 = aux1 -> right;
+ 
+        aux2 = head2 -> right;
+
+        while (tempHead1 != aux1) {
+            int finalRow = tempHead1 -> row; //En que fila trabajaremos al final
+
+            int tempRow = tempHead1 -> col; //En que fila debemos iterar sobre la otra matriz
+
+            while (aux2 != head2) {
+                int mx1Value = tempHead1 -> value;
+                int mx2Value = mx2 -> get(aux2 -> col, tempRow);
+
+                if (mx1Value * mx2Value != 0) newMx -> add(mx1Value * mx2Value, aux2 -> col, finalRow);
+
+                aux2 = aux2 -> right;
+            }
+
+            tempHead1 = tempHead1 -> right;
+            aux2 = head2 -> right;
+        }
+        aux1 = aux1 -> down;
+    }
+
+    return newMx;
 }
