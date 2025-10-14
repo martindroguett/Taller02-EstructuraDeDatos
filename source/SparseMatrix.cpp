@@ -215,29 +215,10 @@ int SparseMatrix::density() { //Ready
 
 SparseMatrix* SparseMatrix::multiply(SparseMatrix* mx2) { //Ready
     Node* head1 = this -> start;
-    Node* aux1 = head1 -> right;
+    Node* aux1 = head1 -> down;
 
     Node* head2 = mx2 -> start;
-    Node* aux2 = head2 -> down;
-
-    int countCol1 = 0;
-    while (aux1 != head1) { 
-        countCol1++;
-        aux1 = aux1 -> right;
-    }
-
-    int countRow2 = 0;
-    while (aux2 != head2) {
-        countRow2++;
-        aux2 = aux2 -> down;
-    }
-
-    if (countCol1 != countRow2) {
-        std::cout << "The matrices cannot be multiplied, the dimensions are not compatible." << std::endl;
-        return nullptr;
-    }
-
-    aux1 = head1 -> down;
+    Node* aux2 = nullptr;
 
     SparseMatrix* newMx = new SparseMatrix();
 
