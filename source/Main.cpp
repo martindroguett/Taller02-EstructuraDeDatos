@@ -1,5 +1,7 @@
 #include "../headers/SparseMatrix.h"
 #include <iostream>
+#include <set>
+#include <ctime>
 
 using namespace std;
 
@@ -112,7 +114,7 @@ int main() {
 
     int option = 0;
 
-    while (option != 8) {
+    while (option != 9) {
         cout << "=== Menu ===" << endl;
         cout << "Currently working with: ";
         if (isMx1) cout << "Matrix 1" << endl;
@@ -124,7 +126,8 @@ int main() {
         cout << "5. See matrix density" << endl;
         cout << "6. Multiply with another matrix" << endl;
         cout << "7. Change matrix" << endl;
-        cout << "8. Exit" << endl;
+        cout << "8. Test" << endl;
+        cout << "9. Exit" << endl;
         cout << "> "; cin >> option;
 
         if (option == 1) add();
@@ -134,7 +137,8 @@ int main() {
         else if (option == 5) density();
         else if (option == 6) multiply();
         else if (option == 7) change();
-        else if (option == 8) cout << "Goodbye!" << endl;
+        else if (option == 8) test();
+        else if (option == 9) cout << "Goodbye!" << endl;
         else cout << "Please choose a valid option" << endl;
     }
 
