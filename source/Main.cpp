@@ -11,6 +11,22 @@ SparseMatrix* current = mx1;
 
 bool isMx1 = true;
 
+int errorInt() {
+    string x;
+    cout << "> ";
+    cin >> x;
+
+    int n;
+
+    try {
+        n = stoi(x);
+    } catch (exception e) {
+        return 0;
+    }
+
+    return n;
+}
+
 void add() {
     cout << "Enter the value you want to add (Integer > 0)" << endl;
     cout << "> ";
@@ -100,6 +116,100 @@ void multiply() {
     if (newMx) newMx -> printStoredValues();
 }
 
+void test() {
+
+    vector<int> elements = {50, 50, 250, 250, 500, 500, 1000, 1000, 5000, 5000};
+    vector<int> rows = {11, 8, 25, 18, 35, 26, 50, 37, 111, 84};
+    vector<int> cols = {12, 8, 25, 18, 36, 26, 50, 37, 113, 84};
+
+    for (int i = 0; i < 10; i++) {
+        clock_t start, end;
+        double time;
+
+        cout << "Amount of data: " << elements[i] << endl;
+        if (i % 2) cout << "Density: 70%" << endl << endl;
+        else cout << "Density: 40%" << endl << endl; 
+
+        vector<tuple <int, int, int>> data1; //(x, y, value)
+        set<pair<int,int>> used1;
+
+        while (data1.size() < elements[i]) {
+            int x = rand() % cols[i] + 1;
+            int y = rand() % rows[i] + 1;
+            if (used1.count({x,y}) == 0) {
+                int value = rand() % 100 + 1;
+                data1.push_back({x,y,value});
+                used1.insert({x,y});
+            }
+        }
+
+        start = clock();
+
+        for (auto [x, y, value]: data1) {
+            mx1 -> add(value, x, y);
+        } 
+
+        end = clock();
+
+        time = 1000 * double(end - start) / CLOCKS_PER_SEC; //convert to ms
+
+        cout << "ADD: " << endl;
+        cout << "Time: " << time << " ms" << endl << endl;
+
+        set<pair<int,int>> forGet; 
+
+        while (forGet.size() < elements[i]) {
+            int x = rand() % cols[i] + 1;
+            int y = rand() % rows[i] + 1;
+            
+            forGet.insert({x,y});
+        }
+
+        start = clock();
+
+        for (auto [x, y]: forGet) {
+            mx1 -> get(x, y);
+        } 
+
+        end = clock();
+
+        time = 1000 * double(end - start) / CLOCKS_PER_SEC; //convert to ms
+
+        cout << "GET: " << endl;
+        cout << "Time: " << time << " ms" << endl << endl;
+
+
+
+        vector<tuple <int, int, int>> data2; 
+        set<pair<int,int>> used2;
+
+        while (data2.size() < elements[i]) {
+            int x = rand() % cols[i] + 1;
+            int y = rand() % rows[i] + 1;
+            if (used2.count({x,y}) == 0) {
+                int value = rand() % 100 + 1;
+                data2.push_back({x,y,value});
+                used2.insert({x,y});
+            }
+        }
+
+        for (auto [x, y, value]: data2) {
+            mx2 -> add(value, x, y);
+        } 
+
+        start = clock();
+
+        mx1 -> multiply(mx2);
+
+        end = clock();
+
+        time = 1000 * double(end - start) / CLOCKS_PER_SEC; //convert to ms
+
+        cout << "MULTIPLY: " << endl;
+        cout << "Time: " << time << " ms" << endl << endl;
+    }
+}
+
 void change() {
     isMx1 = !isMx1;
     if (isMx1) current = mx1;
@@ -128,7 +238,7 @@ int main() {
         cout << "7. Change matrix" << endl;
         cout << "8. Test" << endl;
         cout << "9. Exit" << endl;
-        cout << "> "; cin >> option;
+        option = errorInt();
 
         if (option == 1) add();
         else if (option == 2) get();
@@ -139,7 +249,7 @@ int main() {
         else if (option == 7) change();
         else if (option == 8) test();
         else if (option == 9) cout << "Goodbye!" << endl;
-        else cout << "Please choose a valid option" << endl;
+        else cout << "Please enter a valid option" << endl << endl;
     }
 
     return 0;
