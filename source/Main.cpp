@@ -29,30 +29,27 @@ int errorInt() {
 
 void add() {
     cout << "Enter the value you want to add (Integer > 0)" << endl;
-    cout << "> ";
-    int value; cin >> value;
+    int value = errorInt(); 
 
     while (value <= 0) {
         cout << "The value is not valid (Integer > 0)" << endl;
-        cin >> value;
+        value = errorInt();
     }
 
     cout << "Enter the X-coordinate (Integer > 0)" << endl;
-    cout << "> ";
-    int x; cin >> x;
+    int x = errorInt(); 
 
     while (x <= 0) {
         cout << "The X-coordinate is not valid (Integer > 0)" << endl;
-        cin >> x;
+        x = errorInt(); 
     }
 
     cout << "Enter the Y-coordinate (Integer > 0)" << endl;
-    cout << "> ";
-    int y; cin >> y;
+    int y = errorInt();
 
     while (y <= 0) {
         cout << "The Y-coordinate is not valid (Integer > 0)" << endl;
-        cin >> y;
+        y = errorInt(); 
     }
 
     current -> add(value, x, y);
@@ -60,21 +57,19 @@ void add() {
 
 void get() {
     cout << "Enter the X-coordinate (Integer > 0)" << endl;
-    cout << "> ";
-    int x; cin >> x;
+    int x = errorInt();
 
     while (x <= 0) {
         cout << "The X-coordinate is not valid (Integer > 0)" << endl;
-        cin >> x;
+        x = errorInt(); 
     }
 
     cout << "Enter the Y-coordinate (Integer > 0)" << endl;
-    cout << "> ";
-    int y; cin >> y;
+    int y = errorInt(); 
 
     while (y <= 0) {
         cout << "The Y-coordinate is not valid (Integer > 0)" << endl;
-        cin >> y;
+        y = errorInt(); 
     }
 
     cout << "The value in the coordinates (" << x << "," << y << ") is: " << current -> get(x,  y) << endl;
@@ -84,20 +79,20 @@ void get() {
 void remove() {
     cout << "Enter the X-coordinate (Integer > 0)" << endl;
     cout << "> ";
-    int x; cin >> x;
+    int x = errorInt();
 
     while (x <= 0) {
         cout << "The X-coordinate is not valid (Integer > 0)" << endl;
-        cin >> x;
+        x = errorInt(); 
     }
 
     cout << "Enter the Y-coordinate (Integer > 0)" << endl;
     cout << "> ";
-    int y; cin >> y;
+    int y = errorInt(); 
 
     while (y <= 0) {
         cout << "The Y-coordinate is not valid (Integer > 0)" << endl;
-        cin >> y;
+        y = errorInt(); 
     }
 
     current -> remove(x, y);
